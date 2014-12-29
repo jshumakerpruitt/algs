@@ -9,7 +9,6 @@ class DFSPaths
     @visited[v] = true
     @graph.adj(v).each do |vert|
       next if @visited[vert]
-      @visited[vert] = true
       @edge_to[vert] = v
       dfs(vert)
     end
