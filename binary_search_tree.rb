@@ -55,7 +55,8 @@ class BinarySearchTree
     return false if find(key).nil?
     node = get(key)
     successor = min_node(node.right) 
-    node.value = successor.value
+    node.value = successor.value 
+    node.key = successor.key
     del_min(node.right)
   end
 
