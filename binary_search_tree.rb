@@ -1,5 +1,6 @@
 # #----------------------------------------------------# #
-# TODO: 1) #keys, #vals
+# TODO: 0) documentation
+#       1) #keys, #vals
 #       2) auxilliary functions: rank(key),
 #          select(nth el), floor(key), ceiling(key)...
 # #----------------------------------------------------# #
@@ -84,7 +85,7 @@ class BinarySearchTree
       node.right = nil
       true
     else
-      del_min(node.right)
+      del_max(node.right)
     end
   end
 
