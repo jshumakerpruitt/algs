@@ -8,7 +8,6 @@ class BinarySearchTree
   attr_accessor :root, :count
   def initialize
     @root = nil
-    @count = 0
   end
 
   def insert(key, value)
@@ -101,7 +100,6 @@ class BinarySearchTree
 
   def put(node, key, value)
     if node.nil?
-      @count += 1
       Node.new(key, value)
     elsif node.key == key
       node.value = value
