@@ -5,27 +5,14 @@
 #          select(nth el), floor(key), ceiling(key)...
 # #----------------------------------------------------# #
 class BinarySearchTree
+  attr_accessor :root, :count
   def initialize
     @root = nil
+    @count = 0
   end
 
   def insert(key, value)
     @root = put(@root, key, value)
-  end
-
-  def put(node, key, value)
-    if node.nil?
-      Node.new(key, value)
-    elsif node.key == key
-      node.value = value
-      node
-    elsif key < node.key
-      node.left = put(node.left, key, value)
-      node
-    else
-      node.right = put(node.right, key, value)
-      node
-    end
   end
 
   def find(key)
@@ -35,6 +22,67 @@ class BinarySearchTree
     else
       node.value
     end
+  end
+
+  def delete(key)
+    @root = remove(@root, key)
+  end
+
+  def del_min
+    @root = remove_min(@root)
+  end
+  
+  def min_node(node)
+    if node.nil?
+      nil
+    elsif node.left.nil?
+      node
+    else
+      min_node(node.left)
+    end
+  end
+
+  def del_max
+    @root = remove_max(@root)
+  end
+
+  def keys
+    raise "Not implemented yet"
+  end
+
+  private
+  def remove(node, key)
+    return nil if node.nil?
+
+    if key < node.key
+      node.left = remove(node.left, key)
+    elsif key > node.key
+      node.right = remove(node.right, key)
+    else
+      return node.left if node.right.nil?
+      return node.right if node.left.nil?
+
+      node_copy = node
+      node = min_node(node_copy.right)
+      node.right = remove_min(node_copy.right)
+      node.left  = node_copy.left
+    end
+    return node
+  end
+
+  def remove_max(node)
+    return nil if node.nil?
+    return node.left if node.right.nil?
+    
+    node.right = remove_max(node.right)
+    return node
+  end
+
+  def remove_min(node)
+    return nil if node.nil?
+    return node.right if node.left.nil?
+    node.left = remove_min(node.left)
+    return node
   end
 
   def get(key)
@@ -51,52 +99,23 @@ class BinarySearchTree
     return nil
   end
 
-  def delete(key)
-    return false if find(key).nil?
-    node = get(key)
-    successor = min_node(node.right) 
-    node.value = successor.value 
-    node.key = successor.key
-    del_min(node.right)
-  end
-
-  def del_min(node)
-    return false if node.nil?
-    if node.left.left.nil?
-      node.left = nil
-      true
-    else
-      del_min(node.left)
-    end
-  end
-
-  def min_node(node)
+  def put(node, key, value)
     if node.nil?
-      nil
-    elsif node.left.nil?
+      @count += 1
+      Node.new(key, value)
+    elsif node.key == key
+      node.value = value
+      node
+    elsif key < node.key
+      node.left = put(node.left, key, value)
       node
     else
-      min_node(node.left)
+      node.right = put(node.right, key, value)
+      node
     end
-  end
-
-  def del_max(node)
-    return false if node.nil?
-    if node.right.right.nil?
-      node.right = nil
-      true
-    else
-      del_max(node.right)
-    end
-  end
-
-
-  def keys
-
   end
 
 end
-
 
 class Node
   attr_accessor :key, :value, :right, :left
